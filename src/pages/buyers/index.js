@@ -2,14 +2,26 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import styles from "./Buyers.module.css";
 
+import { useEffect, useState } from "react";
+
 export default function Buyers() {
+  const [buyers, setBuyers] = useState([]);
   const { query } = useRouter();
+  console.log(query.zipCode);
+  useEffect(() => {
+    fetch("/api/find-buyers?zipCode=2400")
+      .then((res) => res.json())
+      .then((data) => setBuyers(data));
+  }, []);
   return (
     <>
       <Head>
         <title>Find buyer | EDC</title>
       </Head>
-      <div className="wrapper">
+      <div className="dunno">
+        {buyers.map((buyer) => (
+          <p key={buyer.id}>{buyer.description}</p>
+        ))}
         <h1 className={styles.headline}>Potential buyers</h1>
         <p>
           On this page you get the <code>`query`</code> params like{" "}
